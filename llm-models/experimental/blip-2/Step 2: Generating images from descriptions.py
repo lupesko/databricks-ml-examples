@@ -38,7 +38,10 @@ diffusion_prompts= ds['diffusion_prompt']
 
 # COMMAND ----------
 
-fashion_dir = "/dbfs/FileStore/shared_uploads/avinash.sooriyarachchi@databricks.com/fashion_images/"
+import pathlib
+import tempfile
+
+fashion_dir = pathlib.Path("/dbfs/FileStore/shared_uploads/avinash.sooriyarachchi@databricks.com/fashion_images/")
 
 # COMMAND ----------
 
@@ -46,8 +49,8 @@ i=0
 suffix = '.png'
 for prompt in diffusion_prompts:
   image = pipe(prompt).images[0]
-  save_loc = fashion_dir+str(i)+suffix
-  image.save(save_loc)
+  save_loc = fashion_dir / f"{i}{suffix}"
+  image.save(str(save_loc))
   i+=1
 
 
@@ -61,12 +64,14 @@ display(image)
 
 # COMMAND ----------
 
-image.save('/tmp/test_image.png')
+with tempfile.NamedTemporaryFile(suffix='.png', delete=True) as temp:
+    image.save(temp.name)
+    display(image)
 
 # COMMAND ----------
 
 from PIL import Image
-Image.open('/dbfs/FileStore/shared_uploads/avinash.sooriyarachchi@databricks.com/fashion_images/239.png')
+Image.open(fashion_dir / "239.png")
 
 # COMMAND ----------
 
@@ -87,11 +92,11 @@ display(dfpd)
 
 # COMMAND ----------
 
-dfpd.to_csv(fashion_dir+'metadata.csv', index=False)
+dfpd.to_csv(fashion_dir / 'metadata.csv', index=False)
 
 # COMMAND ----------
 
-fashion_dir+'metadata.csv'
+fashion_dir / 'metadata.csv'
 
 # COMMAND ----------
 

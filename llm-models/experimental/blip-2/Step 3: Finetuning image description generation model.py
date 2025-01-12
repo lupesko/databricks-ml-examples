@@ -171,7 +171,7 @@ from PIL import Image
 import requests
 #img_url = "https://www.jcrew.com/s7-img-facade/AS211_RD5697_m?hei=850&crop=0,0,680,0"
 img_url = "https://images.unsplash.com/photo-1618517351616-38fb9c5210c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFuJTIwdCUyMHNoaXJ0fGVufDB8fDB8fHww&w=1000&q=80"
-raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
+raw_image = Image.open(requests.get(img_url, stream=True, timeout=10).raw).convert('RGB')
 display(raw_image)
 
 # COMMAND ----------

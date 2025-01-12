@@ -30,7 +30,7 @@ model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-
 
 def describe_apparel(image_url, processor, model):
   img_url = image_url
-  raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
+  raw_image = Image.open(requests.get(img_url, stream=True, timeout=10).raw).convert('RGB')
 
   question = "Describe the apparel in this image in vivid detail:"
   inputs = processor(raw_image, question, return_tensors="pt").to("cuda", torch.float16)
